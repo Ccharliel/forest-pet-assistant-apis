@@ -1,0 +1,6 @@
+.idea/
+**/*.log
+
+.env
+**/ezviz_token_data.json
+**/important_info/
