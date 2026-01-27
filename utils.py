@@ -96,5 +96,6 @@ def get_qrcode_buffer(url: str, start_time: Optional[str] = None, end_time: Opti
 if __name__ == "__main__":
     res_buffer = get_qrcode_buffer('https://www.python.org',
                           "2026-01-26 18:04:41", "2026-01-26 18:04:41")
+    # res_buffer = get_qrcode_buffer('https://www.python.org')
     img = Image.open(res_buffer)
     img.save('qrcode_test.png')

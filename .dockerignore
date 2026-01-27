@@ -1,7 +1,11 @@
 .idea/
+.git/
 **/*.log
 requirements.in
 
 .env
 **/ezviz_token_data.json
 **/important_info/
+
+Dockerfile
+.dockerignore
