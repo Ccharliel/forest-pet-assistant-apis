@@ -1,5 +1,10 @@
-import os
 from abc import ABC, abstractmethod
+from loguru import logger
+import os
+
+os.makedirs("logs", exist_ok=True)
+logger.add(f"logs/config.log", rotation="1 MB",
+           filter=lambda record: record["file"].name == "config.py")
 
 class BaseConfig(ABC):
     """
@@ -30,7 +35,7 @@ class DevConfig(BaseConfig):
     def __init__(self):
         from dotenv import load_dotenv
         load_dotenv()
-        print("Development environment: loading config from .env")
+        logger.info("Development environment: loading config from .env")
 
     @property
     def EZVIZ_KEY(self) -> str:
@@ -48,7 +53,7 @@ class DevConfig(BaseConfig):
 
 class ProdConfig(BaseConfig):
     def __init__(self):
-        print("Production environment: loading config from system")
+        logger.info("Production environment: loading config from system")
 
     @property
     def EZVIZ_KEY(self) -> str:

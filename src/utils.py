@@ -1,8 +1,7 @@
 import segno
 from PIL import Image, ImageDraw, ImageFont
-from typing import Optional
 import io
-
+from typing import Optional
 
 def get_qrcode_buffer(url: str, start_time: Optional[str] = None, end_time: Optional[str] = None):
     """现代化风格的二维码生成 (generate by AI)"""
@@ -92,6 +91,7 @@ def get_qrcode_buffer(url: str, start_time: Optional[str] = None, end_time: Opti
     buffer.seek(0)
 
     return buffer
+
 
 if __name__ == "__main__":
     res_buffer = get_qrcode_buffer('https://www.python.org',

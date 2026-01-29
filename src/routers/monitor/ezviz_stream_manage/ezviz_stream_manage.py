@@ -6,20 +6,23 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from loguru import logger
 from config import CONFIG
+import os
+
+# add log
+os.makedirs("logs", exist_ok=True)
+logger.add(f"logs/ezviz_stream_manage.log", rotation="1 MB",
+           filter=lambda record: record["file"].name == "ezviz_stream_manage.py")
 
 # get CURRENT_DIR & ROOT_DIR
 CURRENT_FILE = Path(__file__).resolve()
 CURRENT_DIR = CURRENT_FILE.parent
-
-# add log
-logger.add(f"{CURRENT_DIR}/ezviz_stream_manage.log", rotation="1 MB")
 
 # get ACCESS_TOKEN
 def get_accessToken():
     """
     get accessToken from TOKEN_FILE or API
     """
-    TOKEN_FILE = f"{CURRENT_DIR}/ezviz_token_data.json"
+    TOKEN_FILE = f"{CURRENT_DIR}/token.json"
     # get accessToken from TOKEN_FILE
     if os.path.exists(TOKEN_FILE):
         # TOKEN_FILE exists

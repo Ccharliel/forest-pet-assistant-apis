@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
+import os
 from src.routers import monitor
 from src.middlewares import get_public_domin
 
@@ -9,6 +10,11 @@ def create_app() -> FastAPI:
 
     # adding middleware
     app.middleware("http")(get_public_domin)
+
+    # adding static files
+    app.mount("/statics", StaticFiles(directory="src/statics"), name="statics")
+    os.makedirs("src/tmp", exist_ok=True)
+    app.mount("/tmp", StaticFiles(directory="src/tmp"), name="tmp")
 
     # adding static html_apps
     app.mount("/HLSplayer", StaticFiles(directory="src/html_apps/HLSplayer", html=True), name="HLSplayer")
@@ -20,7 +26,6 @@ def create_app() -> FastAPI:
     @app.get("/", tags=["ROOT"])
     async def root(request: Request):
         public_domain = getattr(request.state, "public_domain", None)
-        print(public_domain)
         return {
             "message": "MyAPI for ForestPetAssistant is running",
             "public_domain": public_domain
