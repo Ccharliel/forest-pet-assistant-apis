@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 import urllib.parse
 from PIL import Image
 import os
+import base64
 from .ezviz_stream_manage import DeviceStream
 from src.utils import get_qrcode_buffer
 
@@ -25,10 +26,13 @@ async def get_play_address(request: Request, device_id: str = Query(...)):
     play_qrcode.save("src/tmp/monitor/play_qrcode.png")
     qrcode_url = f"{request.state.public_domain}/tmp/monitor/play_qrcode.png"
 
+    play_qrcode_base64 = base64.b64encode(play_qrcode_buffer.getvalue()).decode("utf-8")
+
     return JSONResponse(
         content={
             "playAddress": play_address,
             "qrcodeURL": qrcode_url,
+            "qrcodeBase64": play_qrcode_base64,
             "startTime": device_stream.start_time,
             "endTime": device_stream.end_time
         },
