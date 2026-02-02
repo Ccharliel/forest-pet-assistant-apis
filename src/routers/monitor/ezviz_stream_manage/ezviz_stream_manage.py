@@ -1,6 +1,6 @@
 import requests
 import json
-import os
+import pytz
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -189,7 +189,8 @@ def get_stream_hls_address_from_api(stream_id:str):
 # DeviceStream object
 class DeviceStream:
     def __init__(self, device_id: str):
-        now = datetime.now()
+        beijing_tz = pytz.timezone('Asia/Shanghai')
+        now = datetime.now(beijing_tz)
         seven_days_later = now + timedelta(days=7)
         self.start_time = now.strftime("%Y-%m-%d %H:%M:%S")
         self.end_time = seven_days_later.strftime("%Y-%m-%d %H:%M:%S")
