@@ -2,7 +2,8 @@ name: Auto Deployment
 
 on:
   push:
-    tags: ['v*']
+    tags:
+      - 'v*'
 
 jobs:
   docker-build-and-push:

@@ -168,7 +168,8 @@ def get_stream_hls_address_from_api(stream_id:str):
         }
         params = {
             "streamId": stream_id,
-            "protocol": 1
+            "protocol": 1,
+            "quality": 2
         }
         response = requests.get(
             CONFIG.EZVIZ_STREAM_ADDRESS_URL,
