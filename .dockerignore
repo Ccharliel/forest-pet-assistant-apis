@@ -10,4 +10,3 @@ requirements.in
 **/token.json
 
 Dockerfile
-.dockerignore1

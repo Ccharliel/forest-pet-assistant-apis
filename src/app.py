@@ -4,6 +4,7 @@ import os
 from src.routers import monitor
 from src.middlewares import get_public_domin
 
+
 def create_app() -> FastAPI:
     """create fastapi app"""
     app = FastAPI()

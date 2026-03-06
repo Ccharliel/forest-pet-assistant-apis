@@ -6,12 +6,14 @@ os.makedirs("logs", exist_ok=True)
 logger.add(f"logs/config.log", rotation="1 MB",
            filter=lambda record: record["file"].name == "config.py")
 
+
 class BaseConfig(ABC):
     """
     dev and pro common config
     """
     EZVIZ_TOKEN_GET_URL: str = "https://open.ys7.com/api/lapp/token/get"
     EZVIZ_STREAM_MANAGE_URL: str = "https://open.ys7.com/api/service/media/streammanage/stream"
+    POSPAY_LOGIN_URL: str = "https://beta33.pospal.cn/Report/BusinessSummaryV2"
 
     @property
     def EZVIZ_STREAM_LIST_URL(self) -> str:
@@ -30,6 +32,7 @@ class BaseConfig(ABC):
     @abstractmethod
     def EZVIZ_SECRET(self) -> str:
         pass
+
 
 class DevConfig(BaseConfig):
     def __init__(self):
@@ -50,6 +53,7 @@ class DevConfig(BaseConfig):
         if secret is None or len(secret) == 0:
             raise ValueError("EZVIZ_SECRET need to be set in .env")
         return secret
+
 
 class ProdConfig(BaseConfig):
     def __init__(self):
@@ -84,5 +88,5 @@ def get_config() -> BaseConfig:
     config_class = config_map.get(env_name, DevConfig)
     return config_class()
 
-CONFIG = get_config()
 
+CONFIG = get_config()

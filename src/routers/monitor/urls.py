@@ -11,6 +11,7 @@ from src.utils import get_qrcode_buffer
 
 monitor = APIRouter()
 
+
 @monitor.get("/playAddress")
 async def get_play_address(request: Request, device_id: str = Query(...), feishu_authorization: str = Query(None)):
     try:
@@ -52,7 +53,7 @@ async def get_play_address(request: Request, device_id: str = Query(...), feishu
             }
             response = requests.post(url, headers=headers, data=multi_form)
             if response.status_code == 200:
-                response_data["qrcodeFeishuKey"] = response.json()["data"]["image_key"]
+                response_data["qrcodeFeishuKey"] = response.json()["sale"]["image_key"]
             else:
                 return JSONResponse(content={"error": f"Fail to get qrcode feishu key: response = {response.content}"},
                                     status_code=404)

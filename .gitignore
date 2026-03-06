@@ -2,7 +2,7 @@
 **/__pycache__/
 **/tmp/
 **/logs/
-requirements.in
+requirements.txt
 
 .env
 **/important_info/

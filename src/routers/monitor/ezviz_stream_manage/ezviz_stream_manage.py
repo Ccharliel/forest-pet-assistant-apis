@@ -17,6 +17,7 @@ logger.add(f"logs/ezviz_stream_manage.log", rotation="1 MB",
 CURRENT_FILE = Path(__file__).resolve()
 CURRENT_DIR = CURRENT_FILE.parent
 
+
 # get ACCESS_TOKEN
 def get_accessToken():
     """
@@ -38,15 +39,16 @@ def get_accessToken():
     token_data = get_token_data_from_api()
     if token_data is None:
         logger.critical("Cannot get valid accessToken")
-        raise ValueError("Writing token data cannot be None")
+        raise ValueError("Writing token sale cannot be None")
     with open(TOKEN_FILE, "w", encoding="utf-8") as f:
         json.dump(token_data, f, indent=2)
     return token_data["accessToken"]
 
+
 # EZVIZ API
 def get_token_data_from_api():
     """
-    successfully get token data from api: return token_data
+    successfully get token sale from api: return token_data
     else: return None
     """
     try:
@@ -60,16 +62,17 @@ def get_token_data_from_api():
         )
         ret = int(response.json()["code"])
         if ret != 200:
-            logger.error(f"API Error getting token data: response = {response.json()}")
+            logger.error(f"API Error getting token sale: response = {response.json()}")
             return None
-        token_data = response.json()["data"]
-        logger.success("Successfully get token data from API")
+        token_data = response.json()["sale"]
+        logger.success("Successfully get token sale from API")
         return token_data
     except Exception as e:
-        logger.error(f"API Error getting token data: {e}")
+        logger.error(f"API Error getting token sale: {e}")
         return None
 
-def create_device_stream_from_api(device_serial:str, start_time:str, end_time:str):
+
+def create_device_stream_from_api(device_serial: str, start_time: str, end_time: str):
     """
     successfully create device stream from api: return stream_id
     else: return None
@@ -93,14 +96,15 @@ def create_device_stream_from_api(device_serial:str, start_time:str, end_time:st
         if ret != 200:
             logger.error(f"API Error creating device stream: response = {response.json()}")
             return None
-        stream_id = response.json()["data"]["streamId"]
+        stream_id = response.json()["sale"]["streamId"]
         logger.success("Successfully create device stream from API")
         return stream_id
     except Exception as e:
         logger.error(f"API Error creating device stream: {e}")
         return None
 
-def get_device_stream_list_from_api(device_serial:str):
+
+def get_device_stream_list_from_api(device_serial: str):
     """
     successfully get device stream list from api: return device_stream_list
     else: return None
@@ -119,14 +123,15 @@ def get_device_stream_list_from_api(device_serial:str):
         if ret != 200:
             logger.error(f"API Error getting device stream list: response = {response.json()}")
             return None
-        device_stream_list = response.json()["data"]
+        device_stream_list = response.json()["sale"]
         logger.success("Successfully get device stream list from API")
         return device_stream_list
     except Exception as e:
         logger.error(f"API Error getting device stream list: {e}")
         return None
 
-def change_stream_period_from_api(stream_id:str, start_time:str, end_time:str):
+
+def change_stream_period_from_api(stream_id: str, start_time: str, end_time: str):
     """
     successfully change stream period from api: return True
     else: return False
@@ -156,7 +161,8 @@ def change_stream_period_from_api(stream_id:str, start_time:str, end_time:str):
         logger.error(f"API Error changing stream period: {e}")
         return False
 
-def get_stream_hls_address_from_api(stream_id:str):
+
+def get_stream_hls_address_from_api(stream_id: str):
     """
         successfully get stream hls address from api: return stream_hls_address
         else: return None
@@ -180,12 +186,13 @@ def get_stream_hls_address_from_api(stream_id:str):
         if ret != 200:
             logger.error(f"API Error getting stream hls address: response = {response.json()}")
             return None
-        stream_hls_address = response.json()["data"]["address"]
+        stream_hls_address = response.json()["sale"]["address"]
         logger.success("Successfully get stream hls address from API")
         return stream_hls_address
     except Exception as e:
         logger.error(f"API Error getting stream hls address: {e}")
         return None
+
 
 # DeviceStream object
 class DeviceStream:
@@ -219,6 +226,7 @@ class DeviceStream:
             logger.info("Stream for the device Not Existed")
             stream_id = create_device_stream_from_api(self.device_id, self.start_time, self.end_time)
         return stream_id
+
 
 if __name__ == "__main__":
     serial_tmp = "BE6589690"
