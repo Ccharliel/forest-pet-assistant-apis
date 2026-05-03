@@ -8,18 +8,22 @@ import requests
 from requests_toolbelt import MultipartEncoder
 from .ezviz_stream_manage import DeviceStream
 from src.utils import get_qrcode_buffer
+from loguru import logger
 
 monitor = APIRouter()
+log = logger.bind(module="monitor")
 
 
 @monitor.get("/playAddress")
 async def get_play_address(request: Request, device_id: str = Query(...), feishu_authorization: str = Query(None)):
+    log.info(f"[Router] Getting play address request: device_id = {device_id}")
     try:
         device_stream = DeviceStream(device_id)
         if device_stream.hls_address is None:
             raise ValueError("HLS address be None")
     except Exception as e:
-        return JSONResponse(content={"error": f"Fail to get HLS address: {e}"}, status_code=404)
+        log.error(f"Failed to get HLS address: {e}")
+        return JSONResponse(content={"error": f"[Router] Failed to get HLS address: {e}"}, status_code=404)
     encoded_hls_address = urllib.parse.quote(device_stream.hls_address)
     play_address = f"{request.state.public_domain}/HLSplayer/?hlsAddress={encoded_hls_address}"
 
@@ -54,10 +58,14 @@ async def get_play_address(request: Request, device_id: str = Query(...), feishu
             response = requests.post(url, headers=headers, data=multi_form)
             if response.status_code == 200:
                 response_data["qrcodeFeishuKey"] = response.json()["sale"]["image_key"]
+                log.success("[Router] Successfully get qrcode feishu key")
             else:
-                return JSONResponse(content={"error": f"Fail to get qrcode feishu key: response = {response.content}"},
+                log.error(f"Failed to get qrcode feishu key: response = {response.content}")
+                return JSONResponse(content={"error": f"[Router] Failed to get qrcode feishu key: response = {response.content}"},
                                     status_code=404)
         except Exception as e:
-            return JSONResponse(content={"error": f"Fail to get qrcode feishu key: {e}"}, status_code=404)
+            log.error(f"Failed to get qrcode feishu key: {e}")
+            return JSONResponse(content={"error": f"[Router] Failed to get qrcode feishu key: {e}"}, status_code=404)
 
+    log.success(f"[Router] Successfully get play address")
     return JSONResponse(content=response_data, status_code=200)

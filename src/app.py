@@ -1,8 +1,9 @@
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 import os
-from src.routers import monitor
+from src.routers import monitor, sale
 from src.middlewares import get_public_domin
+from loguru import logger
 
 
 def create_app() -> FastAPI:
@@ -21,7 +22,13 @@ def create_app() -> FastAPI:
     app.mount("/HLSplayer", StaticFiles(directory="src/html_apps/HLSplayer", html=True), name="HLSplayer")
 
     # adding router
+    os.makedirs("logs/router", exist_ok=True)
     app.include_router(monitor, prefix="/monitor", tags=["monitor API"])
+    logger.add("logs/router/monitor.log", rotation="1 MB",
+               filter=lambda record: record["extra"].get("module") == "monitor")
+    app.include_router(sale, prefix="/sale", tags=["sale API"])
+    logger.add("logs/router/sale.log", rotation="1 MB",
+               filter=lambda record: record["extra"].get("module") == "sale")
 
     # adding ROOT router
     @app.get("/", tags=["ROOT"])

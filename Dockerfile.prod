@@ -4,6 +4,9 @@ FROM python:3.10-slim
 # 设置工作目录
 WORKDIR /app
 
+# 先安装 Git
+RUN apt-get update && apt-get install -y git
+
 # 复制依赖文件
 COPY requirements.txt .
 

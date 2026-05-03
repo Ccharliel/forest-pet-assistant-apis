@@ -13,7 +13,7 @@ class BaseConfig(ABC):
     """
     EZVIZ_TOKEN_GET_URL: str = "https://open.ys7.com/api/lapp/token/get"
     EZVIZ_STREAM_MANAGE_URL: str = "https://open.ys7.com/api/service/media/streammanage/stream"
-    POSPAY_LOGIN_URL: str = "https://beta33.pospal.cn/Report/BusinessSummaryV2"
+    POSPAY_LOGIN_URL: str = "https://beta33.pospal.cn"
 
     @property
     def EZVIZ_STREAM_LIST_URL(self) -> str:
@@ -32,7 +32,22 @@ class BaseConfig(ABC):
     @abstractmethod
     def EZVIZ_SECRET(self) -> str:
         pass
+    
+    @property
+    @abstractmethod
+    def POSPAL_USERNAME(self) -> str:
+        pass
+    
+    @property
+    @abstractmethod
+    def POSPAL_PASSWORD(self) -> str:
+        pass
 
+    @property
+    @abstractmethod
+    def MYSQL_DATABASE_URL(self) -> str:
+        pass
+    
 
 class DevConfig(BaseConfig):
     def __init__(self):
@@ -53,6 +68,27 @@ class DevConfig(BaseConfig):
         if secret is None or len(secret) == 0:
             raise ValueError("EZVIZ_SECRET need to be set in .env")
         return secret
+    
+    @property
+    def POSPAL_USERNAME(self) -> str:
+        username = os.getenv("POSPAL_USERNAME")
+        if username is None or len(username) == 0:
+            raise ValueError("POSPAL_USERNAME need to be set in .env")
+        return username
+    
+    @property
+    def POSPAL_PASSWORD(self) -> str:
+        password = os.getenv("POSPAL_PASSWORD")
+        if password is None or len(password) == 0:
+            raise ValueError("POSPAL_PASSWORD need to be set in .env")
+        return password
+    
+    @property
+    def MYSQL_DATABASE_URL(self) -> str:
+        url = os.getenv("MYSQL_DATABASE_URL")
+        if url is None or len(url) == 0:
+            raise ValueError("MYSQL_DATABASE_URL need to be set in .env")
+        return url
 
 
 class ProdConfig(BaseConfig):
@@ -72,6 +108,27 @@ class ProdConfig(BaseConfig):
         if secret is None or len(secret) == 0:
             raise ValueError("EZVIZ_SECRET need to be set in system")
         return secret
+
+    @property
+    def POSPAL_USERNAME(self) -> str:
+        username = os.getenv("POSPAL_USERNAME")
+        if username is None or len(username) == 0:
+            raise ValueError("POSPAL_USERNAME need to be set in system")
+        return username
+
+    @property
+    def POSPAL_PASSWORD(self) -> str:
+        password = os.getenv("POSPAL_PASSWORD")
+        if password is None or len(password) == 0:
+            raise ValueError("POSPAL_PASSWORD need to be set in system")
+        return password
+
+    @property
+    def MYSQL_DATABASE_URL(self) -> str:
+        url = os.getenv("MYSQL_DATABASE_URL")
+        if url is None or len(url) == 0:
+            raise ValueError("MYSQL_DATABASE_URL need to be set in system")
+        return url
 
 
 def get_config() -> BaseConfig:

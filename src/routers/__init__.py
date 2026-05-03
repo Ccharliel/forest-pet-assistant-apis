@@ -1,2 +1,2 @@
-from .monitor import monitor
-from .sale import sale
+from .monitor.urls import monitor
+from .sale.urls import sale

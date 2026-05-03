@@ -62,13 +62,13 @@ def get_token_data_from_api():
         )
         ret = int(response.json()["code"])
         if ret != 200:
-            logger.error(f"API Error getting token sale: response = {response.json()}")
+            logger.error(f"API Error getting token data: response = {response.json()}")
             return None
-        token_data = response.json()["sale"]
-        logger.success("Successfully get token sale from API")
+        token_data = response.json()["data"]
+        logger.success("Successfully get token data from API")
         return token_data
     except Exception as e:
-        logger.error(f"API Error getting token sale: {e}")
+        logger.error(f"API Error getting token data: {e}")
         return None
 
 
@@ -123,7 +123,7 @@ def get_device_stream_list_from_api(device_serial: str):
         if ret != 200:
             logger.error(f"API Error getting device stream list: response = {response.json()}")
             return None
-        device_stream_list = response.json()["sale"]
+        device_stream_list = response.json()["data"]
         logger.success("Successfully get device stream list from API")
         return device_stream_list
     except Exception as e:
@@ -186,7 +186,7 @@ def get_stream_hls_address_from_api(stream_id: str):
         if ret != 200:
             logger.error(f"API Error getting stream hls address: response = {response.json()}")
             return None
-        stream_hls_address = response.json()["sale"]["address"]
+        stream_hls_address = response.json()["data"]["address"]
         logger.success("Successfully get stream hls address from API")
         return stream_hls_address
     except Exception as e:
