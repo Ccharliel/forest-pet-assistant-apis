@@ -4,7 +4,7 @@
 **/tmp/
 **/logs/
 
-.env
+tool_server/.env
 **/important_info/
 **/token.json
 
