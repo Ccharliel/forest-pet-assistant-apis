@@ -1,5 +1,6 @@
 # 基础镜像选择
 FROM python:3.10-slim
+LABEL authors="Charlie"
 
 # 设置工作目录
 WORKDIR /app

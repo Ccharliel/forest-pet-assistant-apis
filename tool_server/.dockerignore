@@ -2,7 +2,7 @@
 **/tmp/
 **/logs/
 
-../.env
+**/.env
 **/token.json
 
 requirements.txt

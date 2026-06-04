@@ -4,10 +4,10 @@
 **/tmp/
 **/logs/
 
-tool_server/.env
-**/important_info/
+**/.env
 **/token.json
+**/important_info/
 
-requirements.txt
-Dockerfile.debug
 CLAUDE.md
+**/requirements.txt
+**/Dockerfile.debug
