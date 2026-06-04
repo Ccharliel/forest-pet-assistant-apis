@@ -1,14 +1,27 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 import os
+from loguru import logger
+from tasks_se import POSPALGETDATA
+
 from src.routers import monitor, sale
 from src.middlewares import get_public_domin
-from loguru import logger
+from config import CONFIG
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.pospal_scheduled_task = POSPALGETDATA(
+        CONFIG.POSPAL_URL, CONFIG.POSPAL_USER_DATA
+    )
+    yield
+    app.state.pospal_scheduled_task.close()
 
 
 def create_app() -> FastAPI:
     """create fastapi app"""
-    app = FastAPI()
+    app = FastAPI(lifespan=lifespan)
 
     # adding middleware
     app.middleware("http")(get_public_domin)

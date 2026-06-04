@@ -1,4 +1,5 @@
 .idea/
+.claude/
 **/__pycache__/
 **/tmp/
 **/logs/
@@ -6,3 +7,7 @@
 .env
 **/important_info/
 **/token.json
+
+requirements.txt
+Dockerfile.debug
+CLAUDE.md

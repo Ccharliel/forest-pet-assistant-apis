@@ -13,6 +13,7 @@ from typing import Optional
 import segno
 from PIL import Image, ImageDraw, ImageFont
 
+
 def get_qrcode_buffer(url: str, start_time: Optional[str] = None, end_time: Optional[str] = None) -> io.BytesIO:
     """全新卡片式布局二维码（保持尺寸不变，风格更现代）(AI Generated)"""
     # 生成二维码
@@ -157,6 +158,7 @@ def get_qrcode_buffer(url: str, start_time: Optional[str] = None, end_time: Opti
     buffer.seek(0)
 
     return buffer
+
 
 if __name__ == "__main__":
     res_buffer = get_qrcode_buffer('https://www.python.org',

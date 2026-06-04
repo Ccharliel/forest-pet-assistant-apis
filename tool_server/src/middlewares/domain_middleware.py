@@ -1,5 +1,6 @@
 from fastapi import Request
 
+
 async def get_public_domin(request: Request, call_next):
     """get public domin from request"""
     headers = request.headers

@@ -5,8 +5,9 @@ import time
 from datetime import datetime, timedelta
 from pathlib import Path
 from loguru import logger
-from config import CONFIG
 import os
+
+from config import CONFIG
 
 # add log
 os.makedirs("logs", exist_ok=True)

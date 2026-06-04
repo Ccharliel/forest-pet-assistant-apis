@@ -6,9 +6,10 @@ import os
 import base64
 import requests
 from requests_toolbelt import MultipartEncoder
+from loguru import logger
+
 from .ezviz_stream_manage import DeviceStream
 from src.utils import get_qrcode_buffer
-from loguru import logger
 
 monitor = APIRouter()
 log = logger.bind(module="monitor")
@@ -16,7 +17,7 @@ log = logger.bind(module="monitor")
 
 @monitor.get("/playAddress")
 async def get_play_address(request: Request, device_id: str = Query(...), feishu_authorization: str = Query(None)):
-    log.info(f"[Router] Getting play address request: device_id = {device_id}")
+    log.info(f"[Router] Getting play address: device_id = {device_id}")
     try:
         device_stream = DeviceStream(device_id)
         if device_stream.hls_address is None:
