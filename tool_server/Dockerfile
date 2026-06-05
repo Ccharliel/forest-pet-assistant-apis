@@ -58,7 +58,7 @@ RUN pip-compile requirements.in -i https://mirrors.aliyun.com/pypi/simple/
 RUN pip install --no-cache-dir -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 
 # 复制应用代码
-COPY .. .
+COPY . .
 
 # 暴露端口
 EXPOSE 8000

@@ -1,0 +1,58 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: forestpet-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - forestpet-network
+
+  tool-server:
+    image: ${DOCKER_HUB_USERNAME}/forestpet-apis-tool-server:latest
+    container_name: forestpet-tool-server
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      ENVIRONMENT: production
+      EZVIZ_KEY: ${EZVIZ_KEY}
+      EZVIZ_SECRET: ${EZVIZ_SECRET}
+      POSPAL_USERNAME: ${POSPAL_USERNAME}
+      POSPAL_PASSWORD: ${POSPAL_PASSWORD}
+      POSPAL_DATABASE_URL: mysql+pymysql://root:${MYSQL_ROOT_PASSWORD}@mysql:3306/pospal
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - forestpet-network
+
+  assistant-server:
+    image: ${DOCKER_HUB_USERNAME}/forestpet-apis-assistant-server:latest
+    container_name: forestpet-assistant-server
+    restart: unless-stopped
+    # TODO: uncomment when assistant_server is ready
+    # ports:
+    #   - "8001:8001"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - forestpet-network
+
+volumes:
+  mysql_data:
+
+networks:
+  forestpet-network:
+    driver: bridge

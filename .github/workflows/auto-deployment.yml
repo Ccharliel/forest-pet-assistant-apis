@@ -13,10 +13,10 @@ jobs:
         include:
           - name: tool-server
             dockerfile: tool_server/Dockerfile
-            context: .
-          - name: agent-server
-            dockerfile: agent_server/Dockerfile
-            context: .
+            context: tool_server
+          - name: assistant-server
+            dockerfile: assistant_server/Dockerfile
+            context: assistant_server
 
     steps:
     - name: Checkout
